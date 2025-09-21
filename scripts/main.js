@@ -452,7 +452,7 @@ function initAnimations() {
 // Natural effects for photographer's personality
 function initNaturalEffects() {
     // Add subtle hover effects to frames
-    const frames = document.querySelectorAll('.photographer-frame, .nature-frame, .drone-placeholder');
+    const frames = document.querySelectorAll('.photographer-frame, .portrait-frame, .drone-placeholder');
 
     frames.forEach(frame => {
         frame.addEventListener('mouseenter', () => {
@@ -656,7 +656,7 @@ Services:
 👤 Portrait photography
 🎉 Event photography
 🚁 Drone photography
-🌲 Nature & landscape
+📷 Landscape photography
 
 Built with professional excellence! 📸
 `);

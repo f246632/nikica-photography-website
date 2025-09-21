@@ -435,7 +435,7 @@ section {
     justify-content: center;
 }
 
-.nature-frame {
+.portrait-frame {
     width: 280px;
     height: 350px;
     background: var(--nature-green);
@@ -446,7 +446,7 @@ section {
     transition: var(--transition);
 }
 
-.nature-frame:hover {
+.portrait-frame:hover {
     transform: rotate(-1deg) scale(1.05);
 }
 
@@ -472,6 +472,21 @@ section {
     text-align: center;
     font-weight: 500;
     margin: 0;
+}
+
+.portrait-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid var(--warm-beige);
+    transition: var(--transition);
+    filter: grayscale(20%) contrast(1.1);
+}
+
+.portrait-image:hover {
+    filter: grayscale(0%) contrast(1.2);
+    transform: scale(1.05);
 }
 
 /* Services Section */
