@@ -185,7 +185,7 @@ async function simulateEmailSend(formData) {
             }
 
             console.log('='.repeat(50));
-            console.log('Natural photographer with dreads ready for your shoot! 🌿📸');
+            console.log('Professional photographer ready for your shoot! 📸');
 
             // Simulate success
             resolve('Email sent successfully to Nikica');
@@ -643,9 +643,9 @@ window.NikicaPhotography = {
 
 // Natural console greeting
 console.log(`
-🌿📸 Nikica Karas Photography Website
-=======================================
-Natural photographer with dreads from beautiful Croatia!
+📸 Nikica Karas Photography Website
+====================================
+Professional photographer from beautiful Croatia!
 
 📍 Locations: Opatija • Krk • Ogulin
 📞 Contact: +385 92 372 0382
@@ -658,5 +658,5 @@ Services:
 🚁 Drone photography
 🌲 Nature & landscape
 
-Built with love for nature! 🌿
+Built with professional excellence! 📸
 `);
