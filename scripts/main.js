@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize all functionality
     initNavigation();
     initPortfolioFilter();
+    initLightbox();
     initContactForm();
     initSmoothScrolling();
     initAnimations();
@@ -93,6 +94,194 @@ function initPortfolioFilter() {
             item.style.transform = 'translateY(0) rotate(0deg)';
         });
     });
+}
+
+// Lightbox functionality for gallery images
+function initLightbox() {
+    const portfolioImages = document.querySelectorAll('.portfolio-img');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const lightboxCaption = document.getElementById('lightbox-caption');
+    const closeBtn = document.querySelector('.lightbox-close');
+    const prevBtn = document.querySelector('.lightbox-prev');
+    const nextBtn = document.querySelector('.lightbox-next');
+
+    let currentImageIndex = 0;
+    let currentImages = [];
+
+    // Open lightbox when clicking on portfolio images
+    portfolioImages.forEach((img, index) => {
+        img.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            // Get all visible images for navigation
+            const visibleItems = Array.from(document.querySelectorAll('.portfolio-item'))
+                .filter(item => item.style.display !== 'none');
+
+            currentImages = visibleItems.map(item => {
+                const img = item.querySelector('.portfolio-img');
+                return {
+                    src: img.getAttribute('data-full'),
+                    alt: img.getAttribute('alt'),
+                    title: item.querySelector('.portfolio-overlay h4')?.textContent || '',
+                    description: item.querySelector('.portfolio-overlay p')?.textContent || ''
+                };
+            });
+
+            currentImageIndex = visibleItems.findIndex(item =>
+                item.querySelector('.portfolio-img') === img
+            );
+
+            openLightbox();
+        });
+    });
+
+    // Close lightbox
+    closeBtn.addEventListener('click', closeLightbox);
+
+    // Close when clicking outside image
+    lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) {
+            closeLightbox();
+        }
+    });
+
+    // Navigation
+    prevBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showPreviousImage();
+    });
+
+    nextBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showNextImage();
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (lightbox.style.display === 'block') {
+            switch(e.key) {
+                case 'Escape':
+                    closeLightbox();
+                    break;
+                case 'ArrowLeft':
+                    showPreviousImage();
+                    break;
+                case 'ArrowRight':
+                    showNextImage();
+                    break;
+            }
+        }
+    });
+
+    function openLightbox() {
+        if (currentImages.length === 0) return;
+
+        lightbox.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+
+        // Add entrance animation
+        lightbox.style.opacity = '0';
+        setTimeout(() => {
+            lightbox.style.opacity = '1';
+            lightbox.style.transition = 'opacity 0.3s ease';
+        }, 10);
+
+        showCurrentImage();
+
+        // Show/hide navigation buttons
+        updateNavigationButtons();
+    }
+
+    function closeLightbox() {
+        lightbox.style.opacity = '0';
+        setTimeout(() => {
+            lightbox.style.display = 'none';
+            document.body.style.overflow = '';
+        }, 300);
+    }
+
+    function showCurrentImage() {
+        if (currentImages.length === 0) return;
+
+        const currentImage = currentImages[currentImageIndex];
+
+        // Fade out current image
+        lightboxImg.style.opacity = '0';
+        lightboxImg.style.transform = 'scale(0.9)';
+
+        setTimeout(() => {
+            lightboxImg.src = currentImage.src;
+            lightboxImg.alt = currentImage.alt;
+
+            // Update caption
+            lightboxCaption.innerHTML = `
+                <h3>${currentImage.title}</h3>
+                <p>${currentImage.description}</p>
+                <span class="image-counter">${currentImageIndex + 1} / ${currentImages.length}</span>
+            `;
+
+            // Fade in new image
+            lightboxImg.style.opacity = '1';
+            lightboxImg.style.transform = 'scale(1)';
+            lightboxImg.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+        }, 150);
+
+        updateNavigationButtons();
+    }
+
+    function showPreviousImage() {
+        if (currentImages.length <= 1) return;
+
+        currentImageIndex = currentImageIndex > 0 ? currentImageIndex - 1 : currentImages.length - 1;
+        showCurrentImage();
+    }
+
+    function showNextImage() {
+        if (currentImages.length <= 1) return;
+
+        currentImageIndex = currentImageIndex < currentImages.length - 1 ? currentImageIndex + 1 : 0;
+        showCurrentImage();
+    }
+
+    function updateNavigationButtons() {
+        if (currentImages.length <= 1) {
+            prevBtn.style.display = 'none';
+            nextBtn.style.display = 'none';
+        } else {
+            prevBtn.style.display = 'block';
+            nextBtn.style.display = 'block';
+        }
+    }
+
+    // Touch/swipe support for mobile
+    let startX = 0;
+    let endX = 0;
+
+    lightboxImg.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+    });
+
+    lightboxImg.addEventListener('touchend', (e) => {
+        endX = e.changedTouches[0].clientX;
+        handleSwipe();
+    });
+
+    function handleSwipe() {
+        const swipeThreshold = 50;
+        const diff = startX - endX;
+
+        if (Math.abs(diff) > swipeThreshold) {
+            if (diff > 0) {
+                // Swipe left - next image
+                showNextImage();
+            } else {
+                // Swipe right - previous image
+                showPreviousImage();
+            }
+        }
+    }
 }
 
 // Contact form functionality
