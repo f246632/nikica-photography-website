@@ -841,11 +841,10 @@ Professional photographer from beautiful Croatia!
 📧 Email: careass@gmail.com
 
 Services:
-🏠 Apartment photography
-👤 Portrait photography
-🎉 Event photography
-🚁 Drone photography
-📷 Landscape photography
+🏠 Property photography - 500€
+👤 Portrait photography - 500€
+👶 Children photography - 500€
+🚁 Drone photography - 1000€
 
 Built with professional excellence! 📸
 `);
